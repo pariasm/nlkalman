@@ -1,6 +1,7 @@
 #!/bin/bash
 
-DCT_PATH=./dctdenoising
+# we assume that the binaries are in the same folder as the script
+DIR=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 
 I=${1:-""}
 F=${2:-1}
@@ -10,5 +11,5 @@ S=${5:-1}
 
 for i in `seq $F $L`;
 do
-	$DCT_PATH $S `printf $I $i` `printf $O $i` -n 1; 
+	$DIR/dctdenoising $S `printf $I $i` `printf $O $i` -n 1; 
 done
