@@ -42,7 +42,6 @@ int main(int argc, char **argv)
 	const string  of_path    = clo_option("-of"   , ""              , "< Input optical flow");
 	const string  noisy_path = clo_option("-nisy" , "noisy_%03d.png", "> Noisy sequence");
 	const string  final_path = clo_option("-deno" , "deno_%03d.png" , "> Denoised sequence");
-	const string  diff_path  = clo_option("-diff" , "diff_%03d.png" , "> Difference sequence");
 
 	const unsigned firstFrame = clo_option("-f", 0, "< Index of the first frame");
 	const unsigned lastFrame  = clo_option("-l", 0, "< Index of the last frame");
@@ -77,7 +76,7 @@ int main(int argc, char **argv)
 	}
 
 	//! Declarations
-	Video<float> original, noisy, final, subfinal, diff, of;
+	Video<float> original, noisy, final, subfinal, of;
 
 	//! Load input videos
 	original.loadVideo(input_path, firstFrame, lastFrame, frameStep);
@@ -140,13 +139,9 @@ int main(int argc, char **argv)
 	//! Write measures
 	writingMeasures("measures.txt", sigma, final_psnr, final_rmse);
 
-	//! Compute Difference
-	VideoUtils::computeDiff(original, final, diff, sigma);
-
 	//! Save output sequences
 	if (verbose) printf("Saving output sequences\n");
 	final.saveVideo(final_path, firstFrame, frameStep);
-	diff .saveVideo( diff_path, firstFrame, frameStep);
 	subfinal.saveVideo( sub_path, firstFrame, frameStep);
 
 	if(H != NULL)
